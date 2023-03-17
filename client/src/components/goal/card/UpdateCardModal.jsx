@@ -11,15 +11,14 @@ import { cloneDeep } from 'lodash';
 import {
     updateCard,
     getColumnById,
-    getDistinctLabels
+    getDistinctLabels,
 } from '../../../utils/apiRequest/apiRequest';
 import { BsXLg } from 'react-icons/bs';
 import moment from 'moment';
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 const UpdateCardModal = (props) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const {
         id,
         modalOpen,
@@ -29,18 +28,22 @@ const UpdateCardModal = (props) => {
         columns,
         setColumns,
         board,
-        setBoard
+        setBoard,
     } = props;
 
     const [name, setName] = useState(selectedCard.name);
+    const [remind, setRemind] = useState(selectedCard.remind);
     const [description, setDescription] = useState(selectedCard.description);
     const [startDate, setStartDate] = useState(
-        moment(selectedCard.startDate).toDate()
+        moment(selectedCard.startDate).toDate() || new Date()
     );
     const [dueDate, setDueDate] = useState(
-        moment(selectedCard.dueDate).toDate()
+        moment(selectedCard.dueDate).toDate() || new Date()
     );
     const [multiSelect, setMultiSelect] = useState(selectedCard.labels);
+    const [remindAt, setRemindAt] = useState(
+        selectedCard.remindAt ? moment(selectedCard.remindAt).toDate() : new Date()
+    );
     const [selectType, setSelectType] = useState({});
     const [selectPriority, setSelectPriority] = useState({});
 
@@ -60,11 +63,13 @@ const UpdateCardModal = (props) => {
     useEffect(() => {
         setDescription(selectedCard.description);
         setName(selectedCard.name);
+        setRemind(selectedCard.remind);
         setSelectType(selectedCard.type);
         setSelectPriority(selectedCard.priority);
         setStartDate(moment(selectedCard.startDate).toDate());
         setDueDate(moment(selectedCard.dueDate).toDate());
         setMultiSelect(selectedCard.labels);
+        setRemindAt(moment(selectedCard.remindAt).toDate());
     }, [selectedCard]);
 
     const onChangeNewCardFormText = (event) => {
@@ -85,6 +90,7 @@ const UpdateCardModal = (props) => {
     const onchangeNewCardFormDate = (value, name) => {
         // setNewCard({ ...newCard, [name]: value });
         if (name === 'startDate') setStartDate(value);
+        if (name === 'remindAt') setRemindAt(value);
         else if (name === 'dueDate') setDueDate(value);
     };
 
@@ -106,6 +112,8 @@ const UpdateCardModal = (props) => {
             description: description,
             startDate: startDate,
             dueDate: dueDate,
+            remindAt: remindAt ? remindAt : new Date(),
+            remind: remind,
             type: selectType.value,
             priority: selectPriority.value,
             updatedAt: Date.now(),
@@ -119,17 +127,18 @@ const UpdateCardModal = (props) => {
         // if (!newColumn.cards) newColumn.cards = [];
         // newColumn.cards.map(card => card._id === updatedCard._id)
         // onUpdateColumnState(newColumn);
-        let column = columns.find(e => e._id === updatedCard.column)
-        let newColumns = [...columns]
-        let newCards = column.cards.map(card  => card._id === updatedCard._id ? updatedCard : card)
-        column.cards = newCards
-        setColumns(newColumns)
-        const newBoard = {...board}
-        const requestDistincLabels = await getDistinctLabels(updatedCard.board)
-        newBoard.labels = requestDistincLabels.labels
+        let column = columns.find((e) => e._id === updatedCard.column);
+        let newColumns = [...columns];
+        let newCards = column.cards.map((card) =>
+            card._id === updatedCard._id ? updatedCard : card
+        );
+        column.cards = newCards;
+        setColumns(newColumns);
+        const newBoard = { ...board };
+        const requestDistincLabels = await getDistinctLabels(updatedCard.board);
+        newBoard.labels = requestDistincLabels.labels;
         setBoard(newBoard);
         setModalOpen(false);
-        // navigate('/goals')
     };
     const components = {
         DropdownIndicator: null,
@@ -367,6 +376,31 @@ const UpdateCardModal = (props) => {
                                         )}
                                     />
                                 </div>
+                                <div className='mt-6 px-2'>
+                                    <label className='text-xs font-semibold inline-block pb-1'>
+                                        Reminds me
+                                    </label>
+                                    <input
+                                        type='checkbox'
+                                        className='ml-3'
+                                        checked={remind}
+                                        onChange={(e) => {setRemind(!remind);}}
+                                    />
+                                    <DatePicker
+                                        showTimeInput
+                                        wrapperClassName='w-full'
+                                        className='w-full px-2 py-1 bg-slate-100 border-slate-300 rounded text-sm font-semibold'
+                                        dateFormat='dd/MM/yyyy - hh:mm aa'
+                                        selected={remindAt}
+                                        name='remindAt'
+                                        onChange={(date) =>
+                                            onchangeNewCardFormDate(
+                                                date,
+                                                'remindAt'
+                                            )
+                                        }
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -375,7 +409,7 @@ const UpdateCardModal = (props) => {
                             className='rounded font-semibold bg-blue-400 text-white text-sm px-3 py-2'
                             onClick={onSubmit}
                         >
-                            Create Card
+                            Save
                         </button>
                         <button
                             className='rounded font-semibold bg-transparent hover:bg-gray-200 transition duration-200 ml-2 text-sm px-3 py-2'

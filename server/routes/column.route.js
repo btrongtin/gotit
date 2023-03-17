@@ -8,7 +8,19 @@ import { boardService } from '../services/board.service.js';
 import { columnService } from '../services/column.service.js';
 // const Card = require('../models/Card')
 // const Column = require('../models/Column')
+import {mailer} from '../mail/mailer.js'
 
+router.get('/', async (req, res) => {
+	try {
+
+		mailer.sendMail('btrongtin891@gmail.com', "Test Email", `This is a test email <b>Hihi</b>`)
+		console.log('SENDED MAIL')
+		// console.log(transporter.options.host);
+	} catch (error) {
+		console.log(error)
+		res.status(500).json({ success: false, message: 'Internal server error' })
+	}
+})
 router.get('/:id', async (req, res) => {
 	try {
 

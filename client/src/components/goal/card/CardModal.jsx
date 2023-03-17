@@ -9,7 +9,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { cloneDeep } from 'lodash';
 import { createNewCard } from '../../../utils/apiRequest/apiRequest';
-import { BsXLg } from "react-icons/bs";
+import { BsXLg } from 'react-icons/bs';
 
 const CardModal = (props) => {
     const { id, modalOpen, setModalOpen, column, onUpdateColumnState } = props;
@@ -28,6 +28,8 @@ const CardModal = (props) => {
         priority: 'P2',
         column: column._id,
         board: column.board,
+        remindAt: new Date(),
+        remind: false
     });
 
     const { name, description, priority } = newCard;
@@ -78,11 +80,10 @@ const CardModal = (props) => {
             dueDate: new Date(),
             labels: [],
             priority: '',
+            remind: false
         });
-        // setNewCard({...newCard, name: '', description: ''})
         setMultiSelect([]);
         setSelectType('');
-        // console.log('AFTER CLEAR: ', newCard)
         setModalOpen(false);
     };
 
@@ -97,18 +98,6 @@ const CardModal = (props) => {
         { value: 'P2', label: 'P2', color: 'yellow' },
         { value: 'P3', label: 'P3', color: 'green' },
     ];
-
-    // const [startDate, setStartDate] = useState(new Date());
-    // const [dueDate, setDueDate] = useState(new Date());
-    // close on click outside
-    //  useEffect(() => {
-    //     const clickHandler = ({ target }) => {
-    //         if (!modalOpen || modalContent.current.contains(target)) return;
-    //         setModalOpen(false);
-    //     };
-    //     document.addEventListener("click", clickHandler);
-    //     return () => document.removeEventListener("click", clickHandler);
-    // });
 
     // close if the esc key is pressed
     useEffect(() => {
@@ -188,7 +177,7 @@ const CardModal = (props) => {
                             className='absolute top-4 right-4 cursor-pointer'
                             onClick={() => setModalOpen(!modalOpen)}
                         >
-                            <BsXLg/>
+                            <BsXLg />
                         </span>
                         <h2 className='text-xl font-semibold px-2 mb-3'>
                             Create card
@@ -322,6 +311,31 @@ const CardModal = (props) => {
                                 selected={newCard.priority}
                                 onChange={onChangeNewCardFormSelect}
                                 value={selectPriority}
+                            />
+                        </div>
+                        <div className='mt-6 px-2'>
+                            <label className='text-xs font-semibold inline-block pb-1'>
+                                Reminds me
+                            </label>
+                            <input
+                                type='checkbox'
+                                className='ml-3'
+                                name='remind'
+                                checked={newCard.remind}
+                                onChange={(e) => {
+                                    setNewCard({...newCard, remind: !newCard.remind})
+                                }}
+                            />
+                            <DatePicker
+                                showTimeInput
+                                wrapperClassName='w-full'
+                                className='w-full px-2 py-1 bg-slate-100 border-slate-300 rounded text-sm font-semibold'
+                                dateFormat='dd/MM/yyyy - hh:mm aa'
+                                selected={newCard.remindAt}
+                                name='remindAt'
+                                onChange={(date) =>
+                                    onchangeNewCardFormDate(date, 'remindAt')
+                                }
                             />
                         </div>
                     </div>

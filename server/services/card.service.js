@@ -31,6 +31,9 @@ const deleteMany = async (ids) => {
 
 const update = async (id, data) => {
     try {
+        const oldCard =  await Card.findOne({ _id: id }).lean()
+        const oldCardRemind = oldCard.remind
+        console.log('OLDCARD REMIND: ', oldCardRemind)
         const updateData = {
             ...data,
             updatedAt: Date.now(),
@@ -46,8 +49,9 @@ const update = async (id, data) => {
             updateData,
             { new: true }
         );
+        console.log('NEWCARD REMIND: ', result.remind)
 
-        return result;
+        return {card: result, oldCardRemind};
     } catch (error) {
         throw new Error(error);
     }

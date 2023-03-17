@@ -60,6 +60,14 @@ const CardSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    remindAt: {
+        type: Date,
+        default: Date.now,
+    },
+    remind: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const Card = mongoose.model("card", CardSchema);

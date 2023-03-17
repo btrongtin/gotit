@@ -86,64 +86,17 @@ router.get("/", async (req, res) => {
 // @desc Login user
 // @access Public
 router.post("/login", verifyToken, async (req, res) => {
-    console.log("REQ.body: ", req.body);
-    console.log("REQ.uid: ", req.uid);
-    console.log("Req.headers: ", req.headers);
     const foundUser = await User.findOne({ uid: req.uid });
     if (!foundUser) {
         const newUser = new User({
             uid: req.uid,
             name: req.body.name,
+            email: req.body.email
         });
         await newUser.save();
         return res.json(newUser);
     }
     return res.json(foundUser);
-
-    // const { username, password } = req.body;
-
-    // // Simple validation
-    // if (!username || !password)
-    //     return res.status(400).json({
-    //         success: false,
-    //         message: "Missing username and/or password",
-    //     });
-
-    // try {
-    //     const user = await User.findOne({ username });
-    //     if (!user)
-    //         return res.status(400).json({
-    //             success: false,
-    //             message: "Incorrect username or password",
-    //         });
-
-    //     // Username found
-    //     const passwordValid = await argon2.verify(user.password, password);
-    //     if (!passwordValid)
-    //         return res.status(400).json({
-    //             success: false,
-    //             message: "Incorrect username or password",
-    //         });
-
-    //     // All good
-    //     // Return token
-    //     const accessToken = jwt.sign(
-    //         { userId: user._id },
-    //         process.env.ACCESS_TOKEN_SECRET
-    //     );
-
-    //     res.json({
-    //         success: true,
-    //         message: "User logged in successfully",
-    //         accessToken,
-    //     });
-    // } catch (error) {
-    //     console.log(error);
-    //     res.status(500).json({
-    //         success: false,
-    //         message: "Internal server error",
-    //     });
-    // }
 });
 
 export default router;

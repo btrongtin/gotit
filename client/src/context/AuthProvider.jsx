@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import setAuthToken from "../utils/setAuthToken";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -15,6 +16,7 @@ export default function AuthProvider({ children }) {
     useEffect(() => {
         const unsubcribed = auth.onIdTokenChanged((loggedInUser) => {
             console.log("[From AuthProvider]", { loggedInUser });
+            // console.log('HEADER: ', axios.defaults.headers)
             if (loggedInUser?.uid) {
                 setUser(loggedInUser);
                 if (
@@ -26,12 +28,12 @@ export default function AuthProvider({ children }) {
                         loggedInUser.accessToken
                     );
                     setAuthToken(localStorage["accessToken"]);
-
-                    console.log("SET TOKEN SUCCESS");
                     // loadUser();
-                    window.location.reload();
+                    // window.location.reload();
                 }
+                else setAuthToken(localStorage["accessToken"]);
                 setIsLoading(false);
+
                 return;
             }
 

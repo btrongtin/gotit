@@ -75,7 +75,6 @@ const getFullBoard = async (boardId) => {
         
         // const distincLabels = [...new Set(labelsOfBoard)]
         let distincLabels = await getDistinctLabels(boardId)
-        console.log('DISTINC LABEL: ', distincLabels)
         result = result[0] || {};
 
         const transformBoard = JSON.parse(JSON.stringify(result));

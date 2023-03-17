@@ -11,7 +11,7 @@ const Login = () => {
         const provider = new GoogleAuthProvider();
 
         const {
-            user: { uid, displayName },
+            user: { uid, displayName, email },
         } = await signInWithPopup(auth, provider);
         try {
             // await axios.post(`${apiUrl}/auth/hoho`, {
@@ -22,6 +22,7 @@ const Login = () => {
             const data = await axios.post(`${apiUrl}/auth/login`, {
                 uid,
                 name: displayName,
+                email
             });
             console.log("register", { data });
         } catch (err) {
