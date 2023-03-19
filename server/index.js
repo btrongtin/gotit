@@ -6,6 +6,7 @@ import authRouter from "./routes/auth.route.js";
 import goalsRouter from "./routes/goals.route.js";
 import cardRouter from "./routes/card.route.js";
 import columnRouter from "./routes/column.route.js";
+import dashboardRouter from "./routes/dashboard.route.js";
 import "./firebaseConfig.js";
 
 const connectDB = async () => {
@@ -31,13 +32,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/api/auth", authRouter);
-app.get("/api/auth/aa", (req, res) => {
-    console.log("YOP FEN");
-    res.send("HELLO WORLD");
-});
 app.use('/api/goals', goalsRouter);
 app.use('/api/card', cardRouter);
 app.use('/api/column', columnRouter);
+app.use('/api/dashboard', dashboardRouter);
 // app.use("/api/statistic", statisticRouter);
 
 const PORT = process.env.PORT || 5000;

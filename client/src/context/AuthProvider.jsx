@@ -29,7 +29,7 @@ export default function AuthProvider({ children }) {
                     );
                     setAuthToken(localStorage["accessToken"]);
                     // loadUser();
-                    // window.location.reload();
+                    window.location.reload();
                 }
                 else setAuthToken(localStorage["accessToken"]);
                 setIsLoading(false);

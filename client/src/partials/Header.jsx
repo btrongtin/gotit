@@ -3,6 +3,7 @@ import SearchModal from "./header/SearchModal";
 import Notifications from "./header/Notifications";
 import Help from "./header/Help";
 import UserMenu from "./header/UserMenu";
+import Logo from '../components/branding/Logo';
 
 function Header({ sidebarOpen, setSidebarOpen }) {
     const [searchModalOpen, setSearchModalOpen] = useState(false);
@@ -34,11 +35,12 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                                 <rect x="4" y="17" width="16" height="2" />
                             </svg>
                         </button>
+                        <Logo/>
                     </div>
 
                     {/* Header: Right side */}
                     <div className="flex items-center">
-                        <button
+                        {/* <button
                             className={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 transition duration-150 rounded-full ml-3 ${
                                 searchModalOpen && "bg-slate-200"
                             }`}
@@ -71,7 +73,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                             setModalOpen={setSearchModalOpen}
                         />
                         <Notifications />
-                        <Help />
+                        <Help /> */}
                         {/*  Divider */}
                         <hr className="w-px h-6 bg-slate-200 mx-3" />
                         <UserMenu />

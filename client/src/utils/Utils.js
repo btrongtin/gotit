@@ -56,8 +56,31 @@ export const applyDrag = (arr, dragResult) => {
 export const toggle = (collection, item) => {
     var idx = collection.indexOf(item);
     if (idx !== -1) {
-      collection.splice(idx, 1);
+        collection.splice(idx, 1);
     } else {
-      collection.push(item);
+        collection.push(item);
     }
-  }
+};
+
+export const assignColorsToLabels = (colors, labels) => {
+    return labels.map((label, index) => {
+        const color = colors[index % colors.length];
+        return { ...label, color };
+    });
+};
+
+export const addColorToLabels = (board) => {
+    board.cols.forEach((col) => {
+        col.cards.forEach((card) => {
+            card.labels.forEach((label) => {
+                const matchingLabel = board.labels.find(
+                    (l) => l.value === label.value
+                );
+                if (matchingLabel) {
+                    label.color = matchingLabel.color;
+                }
+            });
+        });
+    });
+    return board;
+};
