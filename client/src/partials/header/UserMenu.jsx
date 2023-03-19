@@ -84,9 +84,9 @@ function UserMenu() {
                         <div className="font-medium text-slate-800">
                             {user.displayName}
                         </div>
-                        {/* <div className="text-xs text-slate-500 italic">
-                            Administrator
-                        </div> */}
+                        <div className="text-xs text-slate-500 italic">
+                            {user.email}
+                        </div>
                     </div>
                     <ul>
                         <li>

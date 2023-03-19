@@ -14,7 +14,8 @@ const Card = (props) => {
                 {card.labels.map((label, index) => (
                     <span
                         key={index}
-                        className={`text-emerald-400 inline-block last:mr-0 mr-2 mb-2 rounded-md px-4 py-1 relative after:content-[''] after:absolute after:inset-0 after:rounded-[inherit] after:bg-current after:opacity-20`}
+                        className={`inline-block last:mr-0 mr-2 mb-2 rounded-md px-4 py-1 relative after:content-[''] after:absolute after:inset-0 after:rounded-[inherit] after:bg-current after:opacity-20`}
+                        style={{ color: `${label.color}`}}
                     >
                         {label && label.label}
                     </span>

@@ -1,31 +1,32 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FilterButton from "../partials/actions/FilterButton";
 import Datepicker from "../partials/actions/Datepicker";
 import DateSelect from "../partials/actions/DateSelect";
+import WelcomeBanner from "../components/dashboard/WelcomeBanner";
+import { AuthContext } from "../context/AuthProvider";
+import DashboardCard from "../components/dashboard/DashboardCard";
+import { getFullBoard } from "../utils/apiRequest/apiRequest";
 
 function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false); //use for mobile responsive
     const [sidebarShrink, setSidebarShrink] = useState(false); //use for desktop
+    const { user } = useContext(AuthContext);
+    const [board, setBoard] = useState({});
+
+    useEffect(() => {
+        // const boardFromDB = colsData;
+        getFullBoard('6402f4cf58d3489d44ae3bd8').then((res) => {
+            console.log('RES NE: ', res);
+            let board = res.fullBoard;
+            console.log('BOARDDD: ', board)
+            setBoard(board);
+        });
+    }, []);
 
     return (
-        // {/* Sidebar */}
-        // {/* <Sidebar
-        //     sidebarOpen={sidebarOpen}
-        //     setSidebarOpen={setSidebarOpen}
-        // /> */}
-
-        // {/* Content area */}
-        // {/* <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden"> */}
-        // {/*  Site header */}
-        // {/* <Header
-        //         sidebarOpen={sidebarOpen}
-        //         setSidebarOpen={setSidebarOpen}
-        //         sidebarShrink={sidebarShrink}
-        //         setSidebarShrink={setSidebarShrink}
-        //     /> */}
-
         <>
             {/* Welcome banner */}
+            <WelcomeBanner user={user}/>
             {/* <WelcomeBanner /> */}
             {/* Dashboard actions */}
             <div className="sm:flex sm:justify-between sm:items-center mb-8">
@@ -34,25 +35,15 @@ function Dashboard() {
 
                 {/* Right: Actions */}
                 <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-                    {/* Filter button */}
-                    <FilterButton />
-                    {/* Datepicker built with flatpickr */}
-                    <Datepicker />
+                    {/* Filter button */}   
                     {/* Add view button */}
-                    <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                        <svg
-                            className="w-4 h-4 fill-current opacity-50 shrink-0"
-                            viewBox="0 0 16 16"
-                        >
-                            <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                        </svg>
-                        <span className="hidden xs:block ml-2">Add view</span>
-                    </button>
                 </div>
             </div>
             {/* Cards */}
-            <div className="grid grid-cols-12 gap-6"></div>
-            // {/* </div> */}
+            <div className="flex items-center gap-6">
+                {board.cols && board.cols.map((col, i) => <DashboardCard key={i} index={i} data={col} />)}
+            </div>
+            {/* </div> */}
         </>
     );
 }

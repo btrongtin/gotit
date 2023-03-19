@@ -6,6 +6,7 @@ import noteIcon from '../images/icons/ic-note.svg';
 import { VscSignOut } from 'react-icons/vsc';
 import routes from '../router/routes';
 import { AuthContext } from '../context/AuthProvider';
+import Logo from '../components/branding/Logo';
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
     const { user } = useContext(AuthContext);
@@ -102,56 +103,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     </button>
                     {/* Logo */}
                     <NavLink end to='/' className='block'>
-                        <svg width='32' height='32' viewBox='0 0 32 32'>
-                            <defs>
-                                <linearGradient
-                                    x1='28.538%'
-                                    y1='20.229%'
-                                    x2='100%'
-                                    y2='108.156%'
-                                    id='logo-a'
-                                >
-                                    <stop
-                                        stopColor='#A5B4FC'
-                                        stopOpacity='0'
-                                        offset='0%'
-                                    />
-                                    <stop stopColor='#A5B4FC' offset='100%' />
-                                </linearGradient>
-                                <linearGradient
-                                    x1='88.638%'
-                                    y1='29.267%'
-                                    x2='22.42%'
-                                    y2='100%'
-                                    id='logo-b'
-                                >
-                                    <stop
-                                        stopColor='#38BDF8'
-                                        stopOpacity='0'
-                                        offset='0%'
-                                    />
-                                    <stop stopColor='#38BDF8' offset='100%' />
-                                </linearGradient>
-                            </defs>
-                            <rect
-                                fill='#6366F1'
-                                width='32'
-                                height='32'
-                                rx='16'
-                            />
-                            <path
-                                d='M18.277.16C26.035 1.267 32 7.938 32 16c0 8.837-7.163 16-16 16a15.937 15.937 0 01-10.426-3.863L18.277.161z'
-                                fill='#4F46E5'
-                            />
-                            <path
-                                d='M7.404 2.503l18.339 26.19A15.93 15.93 0 0116 32C7.163 32 0 24.837 0 16 0 10.327 2.952 5.344 7.404 2.503z'
-                                fill='url(#logo-a)'
-                            />
-                            <path
-                                d='M2.223 24.14L29.777 7.86A15.926 15.926 0 0132 16c0 8.837-7.163 16-16 16-5.864 0-10.991-3.154-13.777-7.86z'
-                                fill='url(#logo-b)'
-                            />
-                        </svg>
+                        {/* <Logo/> */}
                     </NavLink>
                 </div>
 
@@ -178,14 +130,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                                 {name}
                                             </span>
                                         </div>
-                                        {/* <img
-                                            className={`w-6 h-6 group-hover:invert duration-[150ms] ${
-                                                pathname.includes(path) &&
-                                                "invert-[99%] sepia-[7%] saturate-[45%] hue-rotate-[132deg] brightness-[118%] contrast-[100%]"
-                                            }`}
-                                            src={icon}
-                                            alt={icon}
-                                        /> */}
                                     </NavLink>
                                 </li>
                             ))}
@@ -205,14 +149,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             </span>
                         </h3>
                         <ul className='mt-3'>
-                            <li
-                                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
+                            {/* <li
+                                className={` py-2 rounded-sm mb-0.5 last:mb-0 ${
                                     pathname.includes('signout') &&
                                     'bg-slate-900'
                                 }`}
                             >
                                 <div className='flex items-center justify-between'>
-                                    <button
+                                    <a
                                         className='grow flex items-center px-3 py-2 mb-0.5 last:mb-0 hover:bg-primary text-slate-600 hover:text-white rounded-xl transition-all'
                                         onClick={handleLogout}
                                     >
@@ -220,9 +164,27 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                         <span className='text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200'>
                                             Sign out
                                         </span>
-                                    </button>
+                                    </a>
                                 </div>
-                            </li>
+                            </li> */}
+                            <li
+                                    className={`px-3 py-2 mb-0.5 last:mb-0 hover:bg-primary text-slate-600 hover:text-white rounded-xl transition-all group ${
+                                        pathname.includes('/logout') &&
+                                        'bg-primary text-white'
+                                    }`}
+                                >
+                                    <NavLink
+                                        onClick={handleLogout}
+                                        className='flex items-center truncate'
+                                    >
+                                        <div className='flex items-center'>
+                                            <VscSignOut className='w-6 h-6' />
+                                            <span className='text-sm font-medium ml-5 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100'>
+                                                Sign out
+                                            </span>
+                                        </div>
+                                    </NavLink>
+                                </li>
                         </ul>
                     </div>
                 </div>

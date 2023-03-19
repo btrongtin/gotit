@@ -23,11 +23,11 @@ export const routes = [
                 name: "Dashboard",
                 path: "/dashboard",
             },
-            {
-                icon: <BsPencilSquare className="w-6 h-6" />,
-                name: "Notes",
-                path: "/notes",
-            },
+            // {
+            //     icon: <BsPencilSquare className="w-6 h-6" />,
+            //     name: "Notes",
+            //     path: "/notes",
+            // },
             {
                 icon: <BsClipboardCheck className="w-6 h-6"/>,
                 name: "Goals",

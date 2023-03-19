@@ -72,7 +72,7 @@ module.exports = {
                 60: "60",
             },
             colors: {
-                primary: "#0560FD",
+                primary: "#0080FF",
                 grayBackground: "#ECF5FC",
             },
         },
