@@ -14,7 +14,7 @@ export const CommentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "card",
     },
-    createAt: {
+    createdAt: {
         type: Date,
         default: Date.now,
     },

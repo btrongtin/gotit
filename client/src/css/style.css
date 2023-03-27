@@ -33,3 +33,7 @@
     border: 1px dashed #abc;
     margin: 5px 45px 5px 5px;
   }
+.selected-user {
+    border: 3px solid black;
+    transform: scale(1.2);
+}

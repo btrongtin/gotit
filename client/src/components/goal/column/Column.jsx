@@ -9,16 +9,47 @@ import CardModal from '../card/CardModal';
 import { updateColumn } from '../../../utils/apiRequest/apiRequest';
 
 const Column = (props) => {
-    const { column, onCardDrop, onUpdateColumnState, filteredLabels, setUpdateModalOpen, setSelectedCard } = props;
-
+    const {
+        column,
+        onCardDrop,
+        onUpdateColumnState,
+        filteredLabels,
+        filteredUsers,
+        setUpdateModalOpen,
+        setSelectedCard,
+        users,
+    } = props;
+    // console.log('')
     let filteredCards;
-    if (filteredLabels.length) {
-        filteredCards = column.cards.filter((item) => {
+    function filterCards(cards, filteredLabels, filteredUsers) {
+        const matchingLabels = cards.filter((item) => {
             return item.labels.some((label) => {
                 return filteredLabels.includes(label.value);
             });
         });
+        const matchingUsers = cards.filter((item) => {
+            // console.log('FAFAFAF: ', item)
+            return filteredUsers.includes(item.assignedTo);
+        });
+        
+        return [...new Set(matchingLabels.concat(matchingUsers))]
+    }
+
+    if (filteredLabels.length || filteredUsers.length) {
+        console.log('FILTERED LABELS: ', filteredLabels);
+        console.log('FILTERED Users: ', filteredUsers);
+        // filteredCards = column.cards.filter((item) => {
+        //     return item.labels.some((label) => {
+        //         return filteredLabels.includes(label.value);
+        //     });
+        // });
+        filteredCards = filterCards(
+            column.cards,
+            filteredLabels,
+            filteredUsers
+        );
     } else filteredCards = column.cards;
+    console.log('FILTERED CARDDDD: ', filteredCards);
 
     //   const cards = mapOrder(column.cards, column.cardOrder, '_id');
     const cards = mapOrder(filteredCards, column.cardOrder, '_id');
@@ -74,7 +105,7 @@ const Column = (props) => {
     // if (column.cards)
     body = (
         <>
-            <div className='card-list relative mr-3 rounded bg-slate-200 p-4 border border-white w-80 min-h-[85vh] flex flex-col items-center'>
+            <div className='card-list relative mr-3 rounded bg-slate-200 p-4 border border-white w-80 min-h-[85vh] flex flex-col items-center shadow'>
                 <div className='column-drag-handle flex justify-between w-full mb-5 hover:cursor-grab'>
                     <div className='flex items-center'>
                         <h4 className=' text-slate-800 font-semibold text-lg text-left mr-2'>
@@ -115,7 +146,13 @@ const Column = (props) => {
                 >
                     {cards.map((card, index) => (
                         <Draggable key={index}>
-                            <Card card={card} cards={column.cards} setUpdateModalOpen={setUpdateModalOpen} setSelectedCard={setSelectedCard} />
+                            <Card
+                                card={card}
+                                cards={column.cards}
+                                setUpdateModalOpen={setUpdateModalOpen}
+                                setSelectedCard={setSelectedCard}
+                                users={users}
+                            />
                         </Draggable>
                     ))}
                 </Container>
@@ -139,6 +176,7 @@ const Column = (props) => {
                 modalOpen={cardModalOpen}
                 setModalOpen={setCardModalOpen}
                 column={column}
+                users={users}
                 onUpdateColumnState={onUpdateColumnState}
             />
         </>

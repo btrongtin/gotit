@@ -1,0 +1,70 @@
+const cards = [
+    {
+        "name": "card-1",
+        "assignedUser": "user1",
+        "labels": [
+            {
+                "value": "label-1",
+                "display": "label 1"
+            },
+            {
+                "value": "label-2",
+                "display": "label 2"
+            }
+        ]
+    },
+    {
+        "name": "card-2",
+        "assignedUser": "user2",
+        "labels": [
+            {
+                "value": "label-1",
+                "display": "label 1"
+            },
+            {
+                "value": "label-3",
+                "display": "label 3"
+            }
+        ]
+    },
+    {
+        "name": "card-3",
+        "assignedUser": "user2",
+        "labels": [
+            {
+                "value": "label-2",
+                "display": "label 2"
+            },
+            {
+                "value": "label-3",
+                "display": "label 3"
+            }
+        ]
+    }
+]
+
+const labels = [
+    {
+        value: 'label-1',
+        display: 'label 1'
+    },
+    {
+        value: 'label-2',
+        display: 'label 2'
+    },
+    {
+        value: 'label-3',
+        display: 'label 3'
+    },
+]
+
+const users = [
+    {
+        name: 'user 1',
+        uid: 'user1'
+    }
+    ,{
+        name: 'user 2',
+        uid: 'user2'
+    }
+]

@@ -1,6 +1,8 @@
 import Board from '../models/Board.model.js';
 import mongoose from 'mongoose';
 import Card from '../models/Card.model.js';
+import User from '../models/User.js';
+import { getAuth } from 'firebase-admin/auth';
 
 const createNew = async (data) => {
     try {
@@ -43,7 +45,7 @@ const getDistinctLabels = async (boardId) => {
         }
         return null;
     });
-    return distincLabels
+    return distincLabels;
 };
 
 const getFullBoard = async (boardId) => {
@@ -72,9 +74,9 @@ const getFullBoard = async (boardId) => {
                 },
             },
         ]);
-        
+
         // const distincLabels = [...new Set(labelsOfBoard)]
-        let distincLabels = await getDistinctLabels(boardId)
+        let distincLabels = await getDistinctLabels(boardId);
         result = result[0] || {};
 
         const transformBoard = JSON.parse(JSON.stringify(result));
@@ -95,6 +97,31 @@ const getFullBoard = async (boardId) => {
         delete transformBoard.cards;
         transformBoard.labels = distincLabels;
         return transformBoard;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+const getAllBoard = async (userUid) => {
+    try {
+        const user = await User.findOne({uid: userUid}).lean()
+        const boardIds = user.accessBoard
+        let result = await Board.find({ _id: { $in: boardIds } }).sort({createdAt: -1}).lean();
+        if (!result) result = [];
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const getUsersOfBoard = async (boardId) => {
+    try {
+        const board = await Board.findById({_id: boardId}).lean()
+        const users = await User.find({uid: { $in: board.accessByUsers }}).lean()
+        const usersId = users.map(user => ({uid: user.uid}))
+        let newUsers = await getAuth().getUsers(usersId)
+        newUsers.users.forEach((user, i) => users[i].photoURL = user.photoURL)
+        if (!users) users = [];
+        return users;
     } catch (error) {
         throw new Error(error);
     }
@@ -129,5 +156,7 @@ export const boardService = {
     getFullBoard,
     pushColumnOrder,
     update,
-    getDistinctLabels
+    getDistinctLabels,
+    getAllBoard,
+    getUsersOfBoard
 };

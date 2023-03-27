@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 const createNew = async (data) => {
     try {
-        // console.log('DATAAA: ', data)
+        console.log('DATAAA: ', data)
         const newCard = await Card.create(data);
 
         await columnService.pushCardOrder(newCard.column, newCard._id);
