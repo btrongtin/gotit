@@ -7,6 +7,7 @@ import goalsRouter from "./routes/goals.route.js";
 import cardRouter from "./routes/card.route.js";
 import columnRouter from "./routes/column.route.js";
 import dashboardRouter from "./routes/dashboard.route.js";
+import userRouter from "./routes/user.route.js";
 import "./firebaseConfig.js";
 
 const connectDB = async () => {
@@ -36,6 +37,7 @@ app.use('/api/goals', goalsRouter);
 app.use('/api/card', cardRouter);
 app.use('/api/column', columnRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/user', userRouter);
 // app.use("/api/statistic", statisticRouter);
 
 const PORT = process.env.PORT || 5000;

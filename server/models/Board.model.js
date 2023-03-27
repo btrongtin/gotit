@@ -8,18 +8,15 @@ const BoardSchema = new Schema({
         default: 'Unnamed board'
     },
     user: {
-        type: Schema.Types.ObjectId,
-        ref: "user",
+        //this is uid created from firebase 
+        type: String,
+        required: true
     },
     colOrder: {
         type: [String],
         default: [],
     },
-    labels: {
-        type: [String],
-        default: []
-    },
-    createAt: {
+    createdAt: {
         type: Date,
         default: Date.now,
     },
@@ -31,6 +28,10 @@ const BoardSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    accessByUsers: { //this id is uid created by firebase
+        type: [String],
+        default: [],
+    }
 });
 
 // module.exports = mongoose.model("board", BoardSchema);

@@ -29,6 +29,7 @@ const UpdateCardModal = (props) => {
         setColumns,
         board,
         setBoard,
+        users,
     } = props;
 
     const [name, setName] = useState(selectedCard.name);
@@ -40,9 +41,12 @@ const UpdateCardModal = (props) => {
     const [dueDate, setDueDate] = useState(
         moment(selectedCard.dueDate).toDate() || new Date()
     );
+    const [selectAssignedTo, setSelectAssignedTo] = useState({});
     const [multiSelect, setMultiSelect] = useState(selectedCard.labels);
     const [remindAt, setRemindAt] = useState(
-        selectedCard.remindAt ? moment(selectedCard.remindAt).toDate() : new Date()
+        selectedCard.remindAt
+            ? moment(selectedCard.remindAt).toDate()
+            : new Date()
     );
     const [selectType, setSelectType] = useState({});
     const [selectPriority, setSelectPriority] = useState({});
@@ -57,6 +61,7 @@ const UpdateCardModal = (props) => {
         dueDate: new Date(),
         labels: [],
         priority: 'P2',
+        assignedTo: '',
         // column: column._id,
         // board: column.board,
     });
@@ -69,6 +74,7 @@ const UpdateCardModal = (props) => {
         setStartDate(moment(selectedCard.startDate).toDate());
         setDueDate(moment(selectedCard.dueDate).toDate());
         setMultiSelect(selectedCard.labels);
+        setSelectAssignedTo(selectedCard.assignedTo);
         setRemindAt(moment(selectedCard.remindAt).toDate());
     }, [selectedCard]);
 
@@ -79,6 +85,7 @@ const UpdateCardModal = (props) => {
     const onChangeNewCardFormSelect = (value, action) => {
         console.log('action: ', action, value);
         if (action.name === 'type') setSelectType(value);
+        else if (action.name === 'assignedTo') setSelectAssignedTo(value);
         else if (action.name === 'priority') setSelectPriority(value);
     };
 
@@ -95,16 +102,6 @@ const UpdateCardModal = (props) => {
     };
 
     const onSubmit = async (event) => {
-        // console.log('NEW CARD: ', newCard);
-        // const res = await createNewCard(newCard);
-        // const newCardCreated = res.card;
-        // let newColumn = cloneDeep(column);
-        // if (!newColumn.cards) newColumn.cards = [];
-        // newColumn.cards.push(newCardCreated);
-        // newColumn.cardOrder.push(newCardCreated._id);
-        // onUpdateColumnState(newColumn);
-        // resetAddCardData();
-        // console.log('MULTI SELECT: ', multiSelect);
         const updatedCard = {
             ...selectedCard,
             board: selectedCard.board,
@@ -119,14 +116,10 @@ const UpdateCardModal = (props) => {
             updatedAt: Date.now(),
             name: name,
             labels: multiSelect,
+            assignedTo: selectAssignedTo.value
         };
         console.log('UPDATED CARD: ', updatedCard);
         await updateCard(updatedCard._id, updatedCard);
-        // const column = await getColumnById(selectedCard.column)
-        // let newColumn = cloneDeep(column);
-        // if (!newColumn.cards) newColumn.cards = [];
-        // newColumn.cards.map(card => card._id === updatedCard._id)
-        // onUpdateColumnState(newColumn);
         let column = columns.find((e) => e._id === updatedCard.column);
         let newColumns = [...columns];
         let newCards = column.cards.map((card) =>
@@ -144,6 +137,11 @@ const UpdateCardModal = (props) => {
         DropdownIndicator: null,
     };
 
+    const assignedToOptions = users.map((user) => ({
+        value: user.uid,
+        label: user.name,
+    }));
+
     const resetAddCardData = () => {
         setNewCard({
             ...newCard,
@@ -157,6 +155,7 @@ const UpdateCardModal = (props) => {
         });
         setMultiSelect([]);
         setSelectType('');
+        setSelectAssignedTo('');
         setModalOpen(false);
     };
 
@@ -282,6 +281,24 @@ const UpdateCardModal = (props) => {
                                         htmlFor='card-type'
                                         className='text-xs font-semibold block pb-1'
                                     >
+                                        Assign to
+                                    </label>
+                                    <Select
+                                        id='card-type'
+                                        className='text-sm font-semibold'
+                                        options={assignedToOptions}
+                                        value={assignedToOptions.find(
+                                            (i) => i.value === selectAssignedTo
+                                        )}
+                                        name='assignedTo'
+                                        onChange={onChangeNewCardFormSelect}
+                                    />
+                                </div>
+                                <div className='mt-6 px-2'>
+                                    <label
+                                        htmlFor='card-type'
+                                        className='text-xs font-semibold block pb-1'
+                                    >
                                         Card Type
                                     </label>
                                     <Select
@@ -384,7 +401,9 @@ const UpdateCardModal = (props) => {
                                         type='checkbox'
                                         className='ml-3'
                                         checked={remind}
-                                        onChange={(e) => {setRemind(!remind);}}
+                                        onChange={(e) => {
+                                            setRemind(!remind);
+                                        }}
                                     />
                                     <DatePicker
                                         showTimeInput

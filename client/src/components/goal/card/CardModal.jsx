@@ -12,14 +12,16 @@ import { createNewCard } from '../../../utils/apiRequest/apiRequest';
 import { BsXLg } from 'react-icons/bs';
 
 const CardModal = (props) => {
-    const { id, modalOpen, setModalOpen, column, onUpdateColumnState } = props;
+    const { id, modalOpen, setModalOpen, column, onUpdateColumnState, users } = props;
     const [selectType, setSelectType] = useState('');
+    const [selectAssignedTo, setSelectAssignedTo] = useState('');
     const [selectPriority, setSelectPriority] = useState('');
     const [multiSelect, setMultiSelect] = useState([]);
     const [inputMultipleChoices, setInputMultipleChoices] = useState('');
     const modalContent = useRef(null);
     const [newCard, setNewCard] = useState({
         type: 'personal',
+        assignedTo: '',
         name: '',
         description: '',
         startDate: new Date(),
@@ -32,8 +34,6 @@ const CardModal = (props) => {
         remind: false
     });
 
-    const { name, description, priority } = newCard;
-
     const onChangeNewCardFormText = (event) => {
         setNewCard({ ...newCard, [event.target.name]: event.target.value });
     };
@@ -41,6 +41,7 @@ const CardModal = (props) => {
     const onChangeNewCardFormSelect = (value, action) => {
         console.log('action: ', action);
         if (action.name === 'type') setSelectType(value);
+        if (action.name === 'assignedTo') setSelectAssignedTo(value);
         else if (action.name === 'priority') setSelectPriority(value);
         // setSelectType(value)
         setNewCard({ ...newCard, [action.name]: value.value });
@@ -84,6 +85,7 @@ const CardModal = (props) => {
         });
         setMultiSelect([]);
         setSelectType('');
+        setSelectAssignedTo('')
         setModalOpen(false);
     };
 
@@ -92,6 +94,8 @@ const CardModal = (props) => {
         { value: 'work', label: 'Work' },
         { value: 'study', label: 'Study' },
     ];
+    
+    const assignedToOptions = users.map(user => ({value: user.uid, label: user.name}));
 
     const priorityOptions = [
         { value: 'P1', label: 'P1', color: 'red' },
@@ -182,6 +186,22 @@ const CardModal = (props) => {
                         <h2 className='text-xl font-semibold px-2 mb-3'>
                             Create card
                         </h2>
+                        <div className='mt-6 px-2'>
+                            <label
+                                htmlFor='card-type'
+                                className='text-xs font-semibold block pb-1'
+                            >
+                                Assign to
+                            </label>
+                            <Select
+                                id='card-type'
+                                className='text-sm font-semibold'
+                                options={assignedToOptions}
+                                value={selectAssignedTo}
+                                name='assignedTo'
+                                onChange={onChangeNewCardFormSelect}
+                            />
+                        </div>
                         <div className='mt-6 px-2'>
                             <label
                                 htmlFor='card-type'

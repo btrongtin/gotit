@@ -14,7 +14,7 @@ const ColumnSchema = new Schema({
         type: [String],
         default: [],
     },
-    createAt: {
+    createdAt: {
         type: Date,
         default: Date.now,
     },
