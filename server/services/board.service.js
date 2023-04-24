@@ -1,5 +1,5 @@
 import Board from '../models/Board.model.js';
-import mongoose from 'mongoose';
+import mongoose, { Mongoose } from 'mongoose';
 import Card from '../models/Card.model.js';
 
 const createNew = async (data) => {
@@ -99,6 +99,50 @@ const getFullBoard = async (boardId) => {
         throw new Error(error);
     }
 };
+<<<<<<< Updated upstream
+=======
+const getAllBoard = async (userUid) => {
+    try {
+        const user = await User.findOne({uid: userUid}).lean()
+        const boardIds = user.accessBoard
+        let result = await Board.find({ _id: { $in: boardIds } }).sort({createdAt: -1}).lean();
+        if (!result) result = [];
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const getTasksOfUser = async (uid, boardsInfo) => {
+    try {
+        const tasks = await Card.find({assignedTo: uid.toString()}).sort({dueDate: 1}).lean()
+        const handledTasks = tasks.map(task => {
+            const board = boardsInfo.find(b => b._id.toString() === task.board.toString());
+            return {
+              ...task,
+              boardName: board ? board.name : ''
+            };
+          });
+        return handledTasks;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const getUsersOfBoard = async (boardId) => {
+    try {
+        const board = await Board.findById({_id: boardId}).lean()
+        const users = await User.find({uid: { $in: board.accessByUsers }}).lean()
+        const usersId = users.map(user => ({uid: user.uid}))
+        let newUsers = await getAuth().getUsers(usersId)
+        newUsers.users.forEach((user, i) => users[i].photoURL = user.photoURL)
+        if (!users) users = [];
+        return users;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+>>>>>>> Stashed changes
 
 const update = async (id, data) => {
     try {
@@ -129,5 +173,12 @@ export const boardService = {
     getFullBoard,
     pushColumnOrder,
     update,
+<<<<<<< Updated upstream
     getDistinctLabels
+=======
+    getDistinctLabels,
+    getAllBoard,
+    getUsersOfBoard,
+    getTasksOfUser
+>>>>>>> Stashed changes
 };

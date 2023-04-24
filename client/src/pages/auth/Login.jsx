@@ -18,7 +18,7 @@ const Login = () => {
             //     abc: "xyz",
             //     hehe: "haha",
             // });
-            console.log("GET TOKEN: ", localStorage.getItem("accessToken"));
+            // console.log("GET TOKEN: ", localStorage.getItem("accessToken"));
             const data = await axios.post(`${apiUrl}/auth/login`, {
                 uid,
                 name: displayName,

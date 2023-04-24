@@ -16,7 +16,6 @@ export default function AuthProvider({ children }) {
     useEffect(() => {
         const unsubcribed = auth.onIdTokenChanged((loggedInUser) => {
             console.log("[From AuthProvider]", { loggedInUser });
-            // console.log('HEADER: ', axios.defaults.headers)
             if (loggedInUser?.uid) {
                 setUser(loggedInUser);
                 if (

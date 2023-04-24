@@ -18,6 +18,28 @@ const Column = (props) => {
                 return filteredLabels.includes(label.value);
             });
         });
+<<<<<<< Updated upstream
+=======
+        const matchingUsers = cards.filter((item) => {
+            // console.log('FAFAFAF: ', item)
+            return filteredUsers.includes(item.assignedTo);
+        });
+        
+        return [...new Set(matchingLabels.concat(matchingUsers))]
+    }
+
+    if (filteredLabels.length || filteredUsers.length) {
+        // filteredCards = column.cards.filter((item) => {
+        //     return item.labels.some((label) => {
+        //         return filteredLabels.includes(label.value);
+        //     });
+        // });
+        filteredCards = filterCards(
+            column.cards,
+            filteredLabels,
+            filteredUsers
+        );
+>>>>>>> Stashed changes
     } else filteredCards = column.cards;
 
     //   const cards = mapOrder(column.cards, column.cardOrder, '_id');

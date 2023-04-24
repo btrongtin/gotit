@@ -15,7 +15,6 @@ function DoughnutChart({
   width,
   height
 }) {
-
   const canvas = useRef(null);
   const legend = useRef(null);
 
@@ -55,7 +54,19 @@ function DoughnutChart({
             ul.firstChild.remove();
           }
           // Reuse the built-in legendItems generator
-          const items = c.options.plugins.legend.labels.generateLabels(c);
+          // const items = c.options.plugins.legend.labels.generateLabels(c);
+          const items = data.labels.map((label, index) => {
+            return {
+              fillStyle: data.datasets[0].backgroundColor[index],
+              fontColor: "#94a3b8",
+              hidden: false,
+              index: index,
+              lineWidth: 2,
+              pointStyle: undefined,
+              strokeStyle: "#fff",
+              text: label,
+            };
+          });
           items.forEach((item) => {
             const li = document.createElement('li');
             li.style.margin = tailwindConfig().theme.margin[1];

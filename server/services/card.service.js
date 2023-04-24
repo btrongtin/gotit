@@ -5,7 +5,10 @@ import mongoose from 'mongoose';
 
 const createNew = async (data) => {
     try {
+<<<<<<< Updated upstream
         // console.log('DATAAA: ', data)
+=======
+>>>>>>> Stashed changes
         const newCard = await Card.create(data);
 
         await columnService.pushCardOrder(newCard.column, newCard._id);
@@ -33,7 +36,6 @@ const update = async (id, data) => {
     try {
         const oldCard =  await Card.findOne({ _id: id }).lean()
         const oldCardRemind = oldCard.remind
-        console.log('OLDCARD REMIND: ', oldCardRemind)
         const updateData = {
             ...data,
             updatedAt: Date.now(),
@@ -49,7 +51,6 @@ const update = async (id, data) => {
             updateData,
             { new: true }
         );
-        console.log('NEWCARD REMIND: ', result.remind)
 
         return {card: result, oldCardRemind};
     } catch (error) {

@@ -52,7 +52,6 @@ const update = async (id, data) => {
 
         if (updateData._id) delete updateData._id;
         if (updateData.cards) delete updateData.cards;
-        console.log('UPDATE DATA: ', updateData);
         const result = await Column.findOneAndUpdate(
             updateCondition,
             updateData,

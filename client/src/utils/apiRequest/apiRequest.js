@@ -44,4 +44,30 @@ export const getColumnById = async (id) => {
     return res
 }
 
+<<<<<<< Updated upstream
+=======
+export const getListBoardOfUser = async () => {
+    const res = await axios.get(`${apiUrl}/goals/goals`)
+    console.log('RES ALL BOARD: ', res.data)
+    return res.data
+}
+
+export const getDashboard = async () => {
+    const res = await axios.get(`${apiUrl}/dashboard`)
+    // console.log('RES ALL BOARD: ', res.data)
+    return res.data
+}
+
+export const getListUserOfBoard = async (boardId) => {
+    const res = await axios.get(`${apiUrl}/goals/users/${boardId}`)
+    console.log('RES ALL USER: ', res.data)
+    return res.data
+}
+
+export const updateAccessBoardsByUser = async (boardId, email) => {
+    const res = await axios.put(`${apiUrl}/user/${boardId}`, {email})
+    return res.data
+}
+
+>>>>>>> Stashed changes
 
